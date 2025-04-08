@@ -101,3 +101,11 @@ export default function Home() {
     </div>
   );
 }
+
+// export default function Home() {
+//   return (
+//     <main className="min-h-screen flex items-center justify-center bg-indigo-600 text-white text-3xl">
+//       Tailwind działa! 💥
+//     </main>
+//   );
+// }
