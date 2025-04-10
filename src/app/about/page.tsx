@@ -33,10 +33,10 @@ export default function AboutPage() {
               is also shared with parents.
             </p>
             <p>
-              Lessons are crafted to support every student's social, emotional,
-              cognitive, and physical growth. We're skilled in tailoring
-              instruction to each learner’s needs, helping them reach their full
-              potential.
+              Lessons are crafted to support every student&apos;s social,
+              emotional, cognitive, and physical growth. We&apos;re skilled in
+              tailoring instruction to each learner&apos;s needs, helping them
+              reach their full potential.
             </p>
           </CardContent>
         </Card>
