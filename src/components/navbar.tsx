@@ -1,35 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
 import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 import { Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { useScroll } from "@/context/scroll-context";
-
-export function ScrollToAboutLink() {
-  const pathname = usePathname();
-  const router = useRouter();
-  const { aboutRef } = useScroll();
-
-  const handleClick = () => {
-    if (pathname === "/dashboard") {
-      aboutRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-    } else {
-      router.push("/dashboard#about");
-    }
-  };
-
-  return (
-    <button
-      onClick={handleClick}
-      className="text-muted-foreground hover:text-foreground transition-colors"
-    >
-      About Me
-    </button>
-  );
-}
 
 export function Navbar() {
   return (
@@ -51,7 +26,12 @@ export function Navbar() {
                 >
                   Home
                 </Link>
-                <ScrollToAboutLink />
+                <Link
+                  href="/about"
+                  className="hover:text-foreground transition-colors"
+                >
+                  About Me
+                </Link>
                 <Link href="/booking">Lesson Booking</Link>
                 <Link href="/contact">Contact</Link>
               </nav>
@@ -76,7 +56,7 @@ export function Navbar() {
 
           <nav className="flex gap-6 text-sm font-medium justify-center flex-1">
             <Link href="/dashboard">Home</Link>
-            <ScrollToAboutLink />
+            <Link href="/about">About Me</Link>
             <Link href="/booking">Lesson Booking</Link>
             <Link href="/contact">Contact</Link>
           </nav>
