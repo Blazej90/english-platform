@@ -1,8 +1,7 @@
+import NextAuth from "next-auth/next";
 import GoogleProvider from "next-auth/providers/google";
-import { AuthOptions } from "next-auth";
-import NextAuth from "next-auth";
 
-export const authOptions: AuthOptions = {
+export const authOptions = {
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
@@ -10,7 +9,7 @@ export const authOptions: AuthOptions = {
     }),
   ],
   callbacks: {
-    async session({ session, token }) {
+    async session({ session, token }: any) {
       if (session.user) {
         session.user.id = token.sub!;
       }
