@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 const calendarId = process.env.GOOGLE_CALENDAR_ID as string;
 
-export async function GET(req: Request) {
+export async function GET() {
   const now = new Date();
   const nextMonth = new Date();
   nextMonth.setMonth(now.getMonth() + 1);
