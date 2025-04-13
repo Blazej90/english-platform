@@ -33,9 +33,7 @@ export default function BookingPage() {
         const res = await fetch("/api/lessons/availability");
         const data = await res.json();
 
-        const dateKey = format(selectedDate, "yyyy-MM-dd");
         const times: string[] = [];
-
         data.busy.forEach((slot: { start: string }) => {
           const slotDate = new Date(slot.start);
           if (isSameDay(slotDate, selectedDate)) {
@@ -84,12 +82,12 @@ export default function BookingPage() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto p-6 space-y-10">
+    <div className="max-w-4xl mx-auto px-4 py-8 space-y-8 sm:space-y-10">
       <Card>
         <CardHeader>
-          <CardTitle className="text-2xl">Book a Lesson</CardTitle>
+          <CardTitle className="text-xl sm:text-2xl">Book a Lesson</CardTitle>
         </CardHeader>
-        <CardContent className="grid md:grid-cols-2 gap-6">
+        <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>
             <h2 className="text-lg font-semibold mb-2">Pick a day</h2>
             <Calendar
@@ -103,42 +101,50 @@ export default function BookingPage() {
           <div>
             <h2 className="text-lg font-semibold mb-2">Available hours</h2>
             {selectedDate ? (
-              <div className="grid grid-cols-2 gap-3">
-                {lessonHours.map((hour) => {
-                  const isBusy = busyTimes.includes(hour);
-                  const isSelected = selectedHour === hour;
+              <>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                  {lessonHours.map((hour) => {
+                    const isBusy = busyTimes.includes(hour);
+                    const isSelected = selectedHour === hour;
 
-                  return (
+                    return (
+                      <Button
+                        key={hour}
+                        variant={
+                          isSelected
+                            ? "default"
+                            : isBusy
+                            ? "outline"
+                            : "secondary"
+                        }
+                        className={`w-full ${
+                          isBusy ? "opacity-50 cursor-not-allowed" : ""
+                        }`}
+                        disabled={isBusy}
+                        onClick={() => setSelectedHour(hour)}
+                      >
+                        {hour}
+                      </Button>
+                    );
+                  })}
+                </div>
+
+                {selectedHour && (
+                  <div className="mt-6">
                     <Button
-                      key={hour}
-                      variant={
-                        isSelected
-                          ? "default"
-                          : isBusy
-                          ? "outline"
-                          : "secondary"
-                      }
-                      className={isBusy ? "opacity-50 cursor-not-allowed" : ""}
-                      disabled={isBusy}
-                      onClick={() => setSelectedHour(hour)}
+                      className="w-full sm:w-auto"
+                      onClick={handleBooking}
+                      disabled={isBooking}
                     >
-                      {hour}
+                      {isBooking ? "Booking..." : "Confirm Booking"}
                     </Button>
-                  );
-                })}
-              </div>
+                  </div>
+                )}
+              </>
             ) : (
               <p className="text-muted-foreground">
                 Please select a day first.
               </p>
-            )}
-
-            {selectedHour && (
-              <div className="mt-6">
-                <Button onClick={handleBooking} disabled={isBooking}>
-                  {isBooking ? "Booking..." : "Confirm Booking"}
-                </Button>
-              </div>
             )}
           </div>
         </CardContent>
