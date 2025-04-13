@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { format } from "date-fns";
+import { format, isSameDay } from "date-fns";
 import { Calendar } from "@/components/ui/calendar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { toast } from "sonner";
 
 const lessonHours = [
   "09:00",
@@ -18,21 +19,69 @@ const lessonHours = [
   "17:00",
 ];
 
-const mockBusyTimes: Record<string, string[]> = {
-  "2025-04-15": ["10:00", "14:00"],
-  "2025-04-16": ["12:00"],
-};
-
 export default function BookingPage() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [busyTimes, setBusyTimes] = useState<string[]>([]);
+  const [selectedHour, setSelectedHour] = useState<string | null>(null);
+  const [isBooking, setIsBooking] = useState(false);
 
   useEffect(() => {
     if (!selectedDate) return;
 
-    const key = format(selectedDate, "yyyy-MM-dd");
-    setBusyTimes(mockBusyTimes[key] || []);
+    const fetchBusyTimes = async () => {
+      try {
+        const res = await fetch("/api/lessons/availability");
+        const data = await res.json();
+
+        const dateKey = format(selectedDate, "yyyy-MM-dd");
+        const times: string[] = [];
+
+        data.busy.forEach((slot: { start: string }) => {
+          const slotDate = new Date(slot.start);
+          if (isSameDay(slotDate, selectedDate)) {
+            const hour = format(slotDate, "HH:mm");
+            times.push(hour);
+          }
+        });
+
+        setBusyTimes(times);
+      } catch (err) {
+        console.error("Failed to fetch busy times", err);
+        toast.error("Unable to load availability.");
+      }
+    };
+
+    fetchBusyTimes();
   }, [selectedDate]);
+
+  const handleBooking = async () => {
+    if (!selectedDate || !selectedHour) return;
+
+    setIsBooking(true);
+    const date = format(selectedDate, "yyyy-MM-dd");
+
+    try {
+      const res = await fetch("/api/lessons/book", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ date, time: selectedHour }),
+      });
+
+      if (res.ok) {
+        toast.success("Lesson booked successfully!");
+        setSelectedHour(null);
+        setBusyTimes((prev) => [...prev, selectedHour]);
+      } else {
+        const data = await res.json();
+        toast.error(data.error || "Failed to book lesson.");
+      }
+    } catch (err) {
+      console.error("Booking error:", err);
+      toast.error("Something went wrong.");
+    } finally {
+      setIsBooking(false);
+    }
+  };
 
   return (
     <div className="max-w-4xl mx-auto p-6 space-y-10">
@@ -57,12 +106,21 @@ export default function BookingPage() {
               <div className="grid grid-cols-2 gap-3">
                 {lessonHours.map((hour) => {
                   const isBusy = busyTimes.includes(hour);
+                  const isSelected = selectedHour === hour;
+
                   return (
                     <Button
                       key={hour}
-                      variant={isBusy ? "outline" : "default"}
+                      variant={
+                        isSelected
+                          ? "default"
+                          : isBusy
+                          ? "outline"
+                          : "secondary"
+                      }
                       className={isBusy ? "opacity-50 cursor-not-allowed" : ""}
                       disabled={isBusy}
+                      onClick={() => setSelectedHour(hour)}
                     >
                       {hour}
                     </Button>
@@ -73,6 +131,14 @@ export default function BookingPage() {
               <p className="text-muted-foreground">
                 Please select a day first.
               </p>
+            )}
+
+            {selectedHour && (
+              <div className="mt-6">
+                <Button onClick={handleBooking} disabled={isBooking}>
+                  {isBooking ? "Booking..." : "Confirm Booking"}
+                </Button>
+              </div>
             )}
           </div>
         </CardContent>
