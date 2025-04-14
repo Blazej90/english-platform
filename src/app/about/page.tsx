@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function AboutPage() {
@@ -14,8 +15,24 @@ export default function AboutPage() {
         </p>
       </section>
 
-      <section>
-        <Card>
+      <section className="flex flex-col md:flex-row gap-10 items-center md:items-start">
+        <div className="w-full md:w-[360px] flex-shrink-0 text-center space-y-3">
+          <div className="w-full md:w-[360px] mx-auto">
+            <Image
+              src="/images/teacher.jpg"
+              alt="English teacher"
+              width={360}
+              height={480}
+              className="rounded-lg shadow-md w-full h-auto"
+              priority
+            />
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Lamia Oosthuzein – Johannesburg, SA
+          </p>
+        </div>
+
+        <Card className="w-full">
           <CardHeader>
             <CardTitle className="text-2xl">Our Approach</CardTitle>
           </CardHeader>
@@ -49,23 +66,22 @@ export default function AboutPage() {
               What We Offer for School-Aged Students
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-4 text-muted-foreground text-base leading-relaxed">
-            <ul className="list-disc list-inside space-y-2">
-              <li>Preparing lessons aligned with IEB and CAPS curricula.</li>
-              <li>Creating detailed and personalized lesson plans.</li>
-              <li>
-                Assessing progress and providing ongoing feedback to parents.
-              </li>
-              <li>
-                Adapting teaching methods to meet individual learning styles.
-              </li>
-              <li>
-                Building strong study habits and independent learning skills.
-              </li>
-              <li>
-                Identifying academic challenges and offering guided support.
-              </li>
-              <li>Preparing students thoroughly for upcoming exams.</li>
+          <CardContent className="text-muted-foreground text-base leading-relaxed">
+            <ul className="space-y-3 pl-4">
+              {[
+                "Preparing lessons aligned with IEB and CAPS curricula.",
+                "Creating detailed and personalized lesson plans.",
+                "Assessing progress and providing ongoing feedback to parents.",
+                "Adapting teaching methods to meet individual learning styles.",
+                "Building strong study habits and independent learning skills.",
+                "Identifying academic challenges and offering guided support.",
+                "Preparing students thoroughly for upcoming exams.",
+              ].map((item, idx) => (
+                <li key={idx} className="flex items-start gap-2">
+                  <span className="mt-1 text-primary">•</span>
+                  <span>{item}</span>
+                </li>
+              ))}
             </ul>
           </CardContent>
         </Card>
