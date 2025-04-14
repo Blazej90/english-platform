@@ -12,3 +12,5 @@ export const calendar = google.calendar({
   version: "v3",
   auth,
 });
+
+export { auth };
