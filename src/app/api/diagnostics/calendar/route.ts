@@ -22,13 +22,25 @@ export async function GET() {
       upcomingEventsCount: response.data.items?.length || 0,
       sampleEvent: response.data.items?.[0] || null,
     });
-  } catch (error: any) {
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error("Calendar diagnostic failed:", error);
+      return NextResponse.json(
+        {
+          status: "error",
+          message: "Failed to connect to Google Calendar",
+          error: error.message,
+        },
+        { status: 500 }
+      );
+    }
+
     console.error("Calendar diagnostic failed:", error);
     return NextResponse.json(
       {
         status: "error",
         message: "Failed to connect to Google Calendar",
-        error: error.message || error.toString(),
+        error: "Unknown error",
       },
       { status: 500 }
     );

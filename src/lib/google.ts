@@ -4,7 +4,10 @@ import fs from "fs";
 
 const SCOPES = ["https://www.googleapis.com/auth/calendar"];
 
-let credentials: any;
+let credentials: {
+  client_email: string;
+  private_key: string;
+};
 
 if (process.env.NODE_ENV === "production") {
   const base64 = process.env.GOOGLE_SERVICE_ACCOUNT_B64;
