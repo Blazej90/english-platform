@@ -32,8 +32,8 @@ export async function POST(req: Request) {
     const response = await calendar.events.insert({
       calendarId: process.env.GOOGLE_CALENDAR_ID!,
       requestBody: {
-        summary: `Lesson with ${studentName}`,
-        description: `Student email: ${studentEmail}`,
+        summary: "Lesson with Lamia",
+        description: `Student email: ${studentEmail}, User ID: ${userId}`,
         start: {
           dateTime: start.toISOString(),
           timeZone: "Europe/Warsaw",

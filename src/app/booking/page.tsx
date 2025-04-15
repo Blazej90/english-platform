@@ -138,13 +138,6 @@ export default function BookingPage() {
                     >
                       {isBooking ? "Booking..." : "Confirm Booking"}
                     </Button>
-                    <Button
-                      variant="outline"
-                      className="w-full sm:w-auto"
-                      onClick={() => toast("Cancel clicked")}
-                    >
-                      Cancel Booking
-                    </Button>
                   </div>
                 )}
               </>
