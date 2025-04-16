@@ -23,7 +23,6 @@ export async function POST(req: Request) {
     }
 
     const user = await (await clerkClient()).users.getUser(userId);
-    const studentName = user.firstName || "Anonymous";
     const studentEmail = user.emailAddresses[0]?.emailAddress || "Unknown";
 
     const start = new Date(`${date}T${time}:00`);
