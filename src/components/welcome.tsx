@@ -13,8 +13,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 type Event = {
   id: string;
   summary?: string;
-  start: string;
-  end: string;
+  start: { dateTime?: string; date?: string };
+  end: { dateTime?: string; date?: string };
 };
 
 export function Welcome() {
@@ -43,10 +43,8 @@ export function Welcome() {
 
   const handleCancel = async (eventId: string) => {
     try {
-      const res = await fetch(`/api/lessons/cancel`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ eventId }),
+      const res = await fetch(`/api/lessons/cancel?eventId=${eventId}`, {
+        method: "DELETE",
       });
 
       if (res.ok) {
@@ -100,8 +98,25 @@ export function Welcome() {
                         Lesson with Lamia
                       </p>
                       <p className="text-sm">
-                        {format(new Date(event.start), "PPPpp")} –{" "}
-                        {format(new Date(event.end), "pp")}
+                        {event.start?.dateTime || event.start?.date ? (
+                          <>
+                            {format(
+                              new Date(
+                                event.start.dateTime || event.start.date || ""
+                              ),
+                              "PPPpp"
+                            )}{" "}
+                            –{" "}
+                            {format(
+                              new Date(
+                                event.end.dateTime || event.end.date || ""
+                              ),
+                              "pp"
+                            )}
+                          </>
+                        ) : (
+                          <span className="text-red-500">Invalid date</span>
+                        )}
                       </p>
                     </div>
 
