@@ -1,29 +1,29 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
 import { toast } from "sonner";
+
+import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton";
 
-interface CalendarEvent {
-  id?: string;
+type Event = {
+  id: string;
   summary?: string;
-  start: { dateTime?: string; date?: string };
-  end: { dateTime?: string; date?: string };
-}
+  start: string;
+  end: string;
+};
 
 export function Welcome() {
   const { user, isLoaded } = useUser();
+  const router = useRouter();
+  const [events, setEvents] = useState<Event[]>([]);
+  const [loading, setLoading] = useState(true);
   const email = user?.emailAddresses?.[0]?.emailAddress;
   const name = user?.firstName;
-  const router = useRouter();
-
-  const [events, setEvents] = useState<CalendarEvent[]>([]);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -41,21 +41,22 @@ export function Welcome() {
     fetchEvents();
   }, []);
 
-  const cancelLesson = async (eventId: string) => {
+  const handleCancel = async (eventId: string) => {
     try {
-      const res = await fetch(`/api/lessons/cancel?eventId=${eventId}`, {
-        method: "DELETE",
+      const res = await fetch(`/api/lessons/cancel`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ eventId }),
       });
 
       if (res.ok) {
         toast.success("Lesson cancelled");
-        setEvents((prev) => prev.filter((e) => e.id !== eventId));
+        setEvents((prev) => prev.filter((event) => event.id !== eventId));
       } else {
-        const data = await res.json();
-        toast.error(data.error || "Failed to cancel");
+        toast.error("Failed to cancel the lesson");
       }
-    } catch (error) {
-      toast.error("An unexpected error occurred.");
+    } catch {
+      toast.error("Something went wrong");
     }
   };
 
@@ -99,17 +100,8 @@ export function Welcome() {
                         Lesson with Lamia
                       </p>
                       <p className="text-sm">
-                        {format(
-                          new Date(
-                            event.start.dateTime || event.start.date || ""
-                          ),
-                          "PPPpp"
-                        )}{" "}
-                        –{" "}
-                        {format(
-                          new Date(event.end.dateTime || event.end.date || ""),
-                          "pp"
-                        )}
+                        {format(new Date(event.start), "PPPpp")} –{" "}
+                        {format(new Date(event.end), "pp")}
                       </p>
                     </div>
 
@@ -122,7 +114,7 @@ export function Welcome() {
                       </Button>
                       <Button
                         variant="destructive"
-                        onClick={() => event.id && cancelLesson(event.id)}
+                        onClick={() => handleCancel(event.id)}
                       >
                         Cancel
                       </Button>
