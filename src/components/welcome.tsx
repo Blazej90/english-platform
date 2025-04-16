@@ -31,8 +31,7 @@ export function Welcome() {
         const res = await fetch("/api/user-events");
         const data = await res.json();
         setEvents(data.events || []);
-      } catch (error) {
-        console.error("Error fetching user events:", error);
+      } catch {
         toast.error("Failed to load upcoming lessons");
       } finally {
         setLoading(false);
