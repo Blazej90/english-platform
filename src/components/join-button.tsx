@@ -32,7 +32,7 @@ export function JoinButton({ eventId, start }: Props) {
       const res = await fetch("/api/rooms/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ eventId }), // obecnie nie używane, ale gotowe
+        body: JSON.stringify({ eventId }),
       });
 
       const data = await res.json();
@@ -42,8 +42,12 @@ export function JoinButton({ eventId, start }: Props) {
       } else {
         throw new Error(data.error || "Something went wrong");
       }
-    } catch (err: any) {
-      toast.error(err.message || "Failed to join the lesson");
+    } catch (err) {
+      if (err instanceof Error) {
+        toast.error(err.message);
+      } else {
+        toast.error("Failed to join the lesson");
+      }
     }
   };
 
