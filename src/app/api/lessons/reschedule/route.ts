@@ -25,13 +25,11 @@ export async function POST(req: Request) {
     const user = await client.users.getUser(userId);
     const studentEmail = user.emailAddresses[0]?.emailAddress || "Unknown";
 
-    // Usuń stare wydarzenie
     await calendar.events.delete({
       calendarId: process.env.GOOGLE_CALENDAR_ID!,
       eventId,
     });
 
-    // Dodaj nowe wydarzenie
     const start = new Date(`${date}T${time}:00`);
     const end = addHours(start, 1);
 
