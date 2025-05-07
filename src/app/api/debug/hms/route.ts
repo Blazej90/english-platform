@@ -34,7 +34,7 @@ export async function GET(req: Request) {
 
     try {
       parsed = JSON.parse(rawText);
-    } catch (e) {
+    } catch {
       parsed = { error: "Failed to parse JSON", rawText };
     }
 

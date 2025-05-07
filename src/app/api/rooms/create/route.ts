@@ -42,8 +42,8 @@ export async function POST() {
     }
 
     return NextResponse.json({
-      roomName: data.name, // "lesson-..."
-      roomId: data.id, // ← to będzie potrzebne do tokena!
+      roomName: data.name,
+      roomId: data.id,
     });
   } catch (error) {
     console.error("API error:", error);
