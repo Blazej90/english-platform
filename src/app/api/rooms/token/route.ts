@@ -5,7 +5,7 @@ export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
 
   const roomName = searchParams.get("roomName");
-  const roomId = searchParams.get("id"); // UWAGA: to ID z create.ts
+  const roomId = searchParams.get("id");
 
   if (!token || !roomName || !roomId) {
     return NextResponse.json(
@@ -14,7 +14,6 @@ export async function GET(req: Request) {
     );
   }
 
-  // (opcjonalne sprawdzenie, czy pokój istnieje – można usunąć, jeśli niepotrzebne)
   try {
     const verifyRes = await fetch("https://api.100ms.live/v2/rooms", {
       method: "GET",
@@ -25,7 +24,8 @@ export async function GET(req: Request) {
 
     const list = await verifyRes.json();
     const found = list.rooms?.find(
-      (r: any) => r.id === roomId && r.name === roomName
+      (r: { id: string; name: string }) =>
+        r.id === roomId && r.name === roomName
     );
 
     if (!found) {
@@ -44,7 +44,6 @@ export async function GET(req: Request) {
     );
   }
 
-  // 🔐 Generujemy token
   try {
     const res = await fetch("https://api.100ms.live/v2/room-codes/generate", {
       method: "POST",
