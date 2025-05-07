@@ -8,6 +8,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "sonner";
 
 const lessonHours = [
+  "00:00",
+  "01:00",
   "09:00",
   "10:00",
   "11:00",
@@ -20,6 +22,10 @@ const lessonHours = [
   "18:00",
   "19:00",
   "20:00",
+  "21:00",
+  "22:00",
+  "23:00",
+  "24:00",
 ];
 
 export default function BookingPage() {

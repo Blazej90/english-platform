@@ -40,7 +40,9 @@ export async function POST() {
       );
     }
 
-    return NextResponse.json({ roomId: data.id });
+    return NextResponse.json({
+      roomId: data.id,
+    });
   } catch (error) {
     console.error("API error:", error);
     return NextResponse.json(
