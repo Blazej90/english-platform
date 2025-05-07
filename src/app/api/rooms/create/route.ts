@@ -31,6 +31,7 @@ export async function POST() {
     });
 
     const data = await response.json();
+    console.log("Created room data:", data);
 
     if (!response.ok) {
       console.error("Failed to create room", data);
@@ -41,7 +42,8 @@ export async function POST() {
     }
 
     return NextResponse.json({
-      roomId: data.id,
+      roomName: data.name, // "lesson-..."
+      roomId: data.id, // ← to będzie potrzebne do tokena!
     });
   } catch (error) {
     console.error("API error:", error);
