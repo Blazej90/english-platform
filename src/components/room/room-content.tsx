@@ -13,7 +13,6 @@ export default function RoomContent() {
   const params = useParams();
   const roomName =
     typeof params.roomName === "string" ? params.roomName : undefined;
-  const router = useRouter();
   const hmsActions = useHMSActions();
   const isConnected = useHMSStore(selectIsConnectedToRoom);
   const [loading, setLoading] = useState(true);
