@@ -3,15 +3,16 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import {
-  HMSRoomProvider,
   useHMSActions,
   useHMSStore,
   selectIsConnectedToRoom,
 } from "@100mslive/react-sdk";
 import { Button } from "@/components/ui/button";
 
-function RoomContent() {
-  const { roomName } = useParams();
+export default function RoomContent() {
+  const params = useParams();
+  const roomName =
+    typeof params.roomName === "string" ? params.roomName : undefined;
   const router = useRouter();
   const hmsActions = useHMSActions();
   const isConnected = useHMSStore(selectIsConnectedToRoom);
@@ -20,51 +21,64 @@ function RoomContent() {
 
   useEffect(() => {
     const joinRoom = async () => {
-      if (!roomName || typeof roomName !== "string") return;
+      if (!roomName) {
+        setError("Invalid room name");
+        return;
+      }
 
       const searchParams = new URLSearchParams(window.location.search);
       const roomId = searchParams.get("id");
 
       if (!roomId) {
-        console.error("❌ Missing roomId in query string");
-        setError("Missing roomId. Redirecting...");
-        setTimeout(() => router.push("/dashboard"), 3000);
+        setError("Missing room ID in the URL");
         return;
       }
 
       try {
-        const res = await fetch(`/api/rooms/token?roomId=${roomId}`);
-        const text = await res.text();
+        const res = await fetch(
+          `/api/rooms/token?roomName=${roomName}&id=${roomId}`
+        );
+        const raw = await res.text();
+        console.log("🔁 Raw token response:", raw);
+
+        if (!raw) {
+          setError("Empty response from server");
+          return;
+        }
 
         let data;
         try {
-          data = JSON.parse(text);
+          data = JSON.parse(raw);
         } catch {
-          console.error("❌ Failed to parse JSON:", text);
-          throw new Error("Failed to parse JSON response");
+          console.error("❌ Failed to parse JSON:", raw);
+          setError("Server response was not valid JSON");
+          return;
         }
 
         if (!res.ok || !data.token) {
           console.error("❌ Token fetch failed:", res.status, data);
-          throw new Error(data.error || "Failed to fetch token");
+          setError(data.error || "Failed to get auth token");
+          return;
         }
 
         await hmsActions.join({
           userName: "Guest",
           authToken: data.token,
-          settings: { isAudioMuted: false, isVideoMuted: true },
+          settings: {
+            isAudioMuted: false,
+            isVideoMuted: true,
+          },
         });
       } catch (err) {
         console.error("❌ Failed to join room:", err);
-        setError("Could not join the room. Redirecting...");
-        setTimeout(() => router.push("/dashboard"), 3000);
+        setError("Could not join the room. Please try again.");
       } finally {
         setLoading(false);
       }
     };
 
     joinRoom();
-  }, [roomName, hmsActions, router]);
+  }, [roomName, hmsActions]);
 
   if (loading) return <p className="text-center mt-10">Joining the room...</p>;
   if (error) return <p className="text-center mt-10 text-red-500">{error}</p>;
@@ -78,13 +92,5 @@ function RoomContent() {
       </p>
       <Button onClick={() => hmsActions.leave()}>Leave Room</Button>
     </div>
-  );
-}
-
-export default function RoomPage() {
-  return (
-    <HMSRoomProvider>
-      <RoomContent />
-    </HMSRoomProvider>
   );
 }

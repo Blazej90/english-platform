@@ -10,6 +10,7 @@ import { toast } from "sonner";
 const lessonHours = [
   "00:00",
   "01:00",
+  "02:00",
   "09:00",
   "10:00",
   "11:00",
