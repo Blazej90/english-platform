@@ -6,47 +6,75 @@ export async function POST() {
 
   if (!token || !templateId) {
     return NextResponse.json(
-      { error: "Missing HMS credentials" },
+      { error: "Missing HMS credentials or template ID" },
       { status: 500 }
     );
   }
 
-  const payload = {
-    name: `lesson-${Math.random().toString(36).substring(2, 10)}`,
+  const roomName = `lesson-${Math.random().toString(36).substring(2, 10)}`;
+
+  const roomPayload = {
+    name: roomName,
     template_id: templateId,
     description: `Lesson room created at ${new Date().toISOString()}`,
     enabled: true,
-    recording_info: { enabled: false },
     region: "eu",
   };
 
   try {
-    const response = await fetch("https://api.100ms.live/v2/rooms", {
+    const roomRes = await fetch("https://api.100ms.live/v2/rooms", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(payload),
+      body: JSON.stringify(roomPayload),
     });
 
-    const data = await response.json();
-    console.log("Created room data:", data);
+    const roomData = await roomRes.json();
 
-    if (!response.ok) {
-      console.error("Failed to create room", data);
+    if (!roomRes.ok || !roomData.id) {
+      console.error("❌ Failed to create room", roomData);
       return NextResponse.json(
-        { error: "Failed to create room", details: data },
+        { error: "Failed to create room", details: roomData },
+        { status: 500 }
+      );
+    }
+
+    const roomId = roomData.id;
+
+    const codeRes = await fetch(
+      "https://api.100ms.live/v2/room-codes/generate",
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          room_id: roomId,
+          role: "guest",
+        }),
+      }
+    );
+
+    const codeData = await codeRes.json();
+
+    if (!codeRes.ok || !codeData.code) {
+      console.error("❌ Failed to generate room code", codeData);
+      return NextResponse.json(
+        { error: "Failed to generate room code", details: codeData },
         { status: 500 }
       );
     }
 
     return NextResponse.json({
-      roomName: data.name,
-      roomId: data.id,
+      roomId,
+      roomName,
+      roomCode: codeData.code,
     });
   } catch (error) {
-    console.error("API error:", error);
+    console.error("❌ API error:", error);
     return NextResponse.json(
       { error: "Unexpected error while creating room" },
       { status: 500 }
