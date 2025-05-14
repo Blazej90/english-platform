@@ -27,6 +27,12 @@ export function Welcome() {
   const name = user?.firstName;
 
   useEffect(() => {
+    if (isLoaded) {
+      fetch("/api/sync-user", { method: "POST" });
+    }
+  }, [isLoaded]);
+
+  useEffect(() => {
     const fetchEvents = async () => {
       try {
         const res = await fetch("/api/user-events");
