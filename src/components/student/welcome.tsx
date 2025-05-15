@@ -8,7 +8,7 @@ import { toast } from "sonner";
 
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
-import { JoinButton } from "@/components/join-button";
+import { JoinButton } from "@/components/student/join-button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 type Event = {

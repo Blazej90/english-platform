@@ -3,7 +3,7 @@
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Welcome } from "@/components/welcome";
+import { Welcome } from "@/components/student/welcome";
 
 export default function DashboardPage() {
   const { user, isLoaded } = useUser();

@@ -1,4 +1,4 @@
-import { TeacherNavbar } from "@/components/teacher-navbar";
+import { TeacherNavbar } from "@/components/teacher/teacher-navbar";
 
 export default function DashboardTeacherLayout({
   children,
