@@ -4,6 +4,7 @@ import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { toast } from "sonner";
+import { UpcomingTeacherLessons } from "@/components/teacher/upcoming-teacher-lessons";
 
 export default function DashboardTeacherPage() {
   const { user, isLoaded } = useUser();
@@ -11,7 +12,6 @@ export default function DashboardTeacherPage() {
 
   useEffect(() => {
     if (!isLoaded) return;
-
     const email = user?.emailAddresses[0]?.emailAddress;
     if (email !== "lamiaoosthuzein@gmail.com") {
       toast.error("Access denied – teacher only");
@@ -24,9 +24,10 @@ export default function DashboardTeacherPage() {
   return (
     <div>
       <h1 className="text-2xl font-semibold mb-4">Teacher Dashboard</h1>
-      <p className="text-muted-foreground mb-2">
+      <p className="text-muted-foreground mb-4">
         Welcome, {user?.firstName}! This is your teaching panel.
       </p>
+      <UpcomingTeacherLessons />
     </div>
   );
 }
