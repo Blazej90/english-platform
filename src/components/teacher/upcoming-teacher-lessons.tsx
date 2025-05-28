@@ -67,7 +67,7 @@ export function UpcomingTeacherLessons() {
                   </div>
                 </div>
                 <div className="mt-2 md:mt-0">
-                  <JoinAsTeacherButton eventId={lesson.id} lesson={lesson} />
+                  <JoinAsTeacherButton eventId={lesson.id} />
                 </div>
                 <div>Button placeholder</div>
               </li>
