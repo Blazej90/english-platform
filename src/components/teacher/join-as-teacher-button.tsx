@@ -7,16 +7,9 @@ import { useState } from "react";
 
 type Props = {
   eventId: string;
-  lesson: {
-    id: string;
-    summary?: string;
-    start: string;
-    end: string;
-    studentEmail?: string;
-  };
 };
 console.log("✅ join-as-teacher-button loaded");
-export function JoinAsTeacherButton({ eventId, lesson }: Props) {
+export function JoinAsTeacherButton({ eventId }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
