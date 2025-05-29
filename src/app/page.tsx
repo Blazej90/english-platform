@@ -21,7 +21,7 @@ export default function HomePage() {
           py-10
         "
         style={{
-          minHeight: "80vh", // Na mobile niech sekcja nie rozpycha się na 100vh przez klawiaturę, ale wyśrodkowana
+          minHeight: "80vh",
         }}
       >
         <h1 className="text-2xl xs:text-3xl sm:text-5xl font-bold mb-3 sm:mb-4 leading-tight">
