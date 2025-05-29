@@ -1,43 +1,48 @@
-import Link from "next/link";
 import { SignedIn, SignedOut } from "@clerk/nextjs";
-import { Button } from "@/components/ui/button";
+import { HeroHighlight, Highlight } from "@/components/ui/hero-highlight";
+import { HeroButton } from "@/components/ui/hero-button";
 
 export default function HomePage() {
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center px-6 sm:px-8 text-center space-y-8 bg-background text-foreground">
-      <div className="max-w-2xl w-full">
-        <h1 className="text-3xl sm:text-5xl font-bold mb-4 leading-tight">
-          Welcome to <span className="text-emerald-500">English Platform</span>
+    <HeroHighlight containerClassName="min-h-screen flex items-center justify-center px-2 sm:px-0 overflow-x-hidden">
+      <div
+        className="
+          w-full
+          max-w-md
+          sm:max-w-xl
+          lg:max-w-2xl
+          mx-auto
+          text-center
+          flex flex-col
+          items-center
+          justify-center
+          gap-8
+          z-20
+          py-10
+        "
+        style={{
+          minHeight: "80vh", // Na mobile niech sekcja nie rozpycha się na 100vh przez klawiaturę, ale wyśrodkowana
+        }}
+      >
+        <h1 className="text-2xl xs:text-3xl sm:text-5xl font-bold mb-3 sm:mb-4 leading-tight">
+          Welcome to <Highlight>English Platform</Highlight>
         </h1>
-
-        <p className="text-muted-foreground text-base sm:text-lg mb-8">
+        <p className="text-muted-foreground text-sm xs:text-base sm:text-lg mb-6 sm:mb-8">
           Learn English with personalized lessons and professional guidance.
+          <br className="hidden xs:block" />
           Sign in to start booking your sessions and track your progress.
         </p>
-
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <div className="flex flex-col gap-3 sm:flex-row sm:gap-6 w-full items-center justify-center">
           <SignedOut>
-            <Button
-              size="lg"
-              className="bg-emerald-600 text-white hover:bg-emerald-700 rounded-xl px-8 py-4 text-base sm:text-lg transition-all w-full sm:w-auto"
-              asChild
-            >
-              <Link href="/sign-in">Start Learning</Link>
-            </Button>
+            <HeroButton href="/sign-in">Start Learning</HeroButton>
           </SignedOut>
-
           <SignedIn>
-            <Button
-              size="lg"
-              variant="secondary"
-              className="rounded-xl px-8 py-4 text-base sm:text-lg transition-all w-full sm:w-auto"
-              asChild
-            >
-              <Link href="/dashboard">Continue to Your Dashboard</Link>
-            </Button>
+            <HeroButton href="/dashboard">
+              Continue to Your Dashboard
+            </HeroButton>
           </SignedIn>
         </div>
       </div>
-    </main>
+    </HeroHighlight>
   );
 }

@@ -27,7 +27,6 @@ type ContactForm = z.infer<typeof ContactSchema>;
 export default function ContactPage() {
   const { user, isLoaded } = useUser();
 
-  // Domyślnie wypełniony e-mail
   const defaultEmail = user?.primaryEmailAddress?.emailAddress || "";
 
   const form = useForm<ContactForm>({
@@ -39,7 +38,6 @@ export default function ContactPage() {
     },
   });
 
-  // Automatyczna aktualizacja e-maila gdy user się załaduje
   useEffect(() => {
     if (isLoaded && user) {
       form.setValue("email", user.primaryEmailAddress?.emailAddress || "");
