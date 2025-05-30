@@ -25,23 +25,20 @@ export async function POST(req: Request) {
     const user = await client.users.getUser(userId);
     const studentEmail = user.emailAddresses?.[0]?.emailAddress || "Unknown";
 
-    // Typowanie błędu: unknown i ręczny type guard
     try {
       await calendar.events.delete({
         calendarId: process.env.GOOGLE_CALENDAR_ID!,
         eventId,
       });
-    } catch (error: unknown) {
+    } catch (error) {
       if (
         typeof error === "object" &&
         error !== null &&
         "code" in error &&
-        // @ts-expect-error: code is not typed, we check at runtime
-        error.code !== 410
+        (error as { code?: number }).code !== 410
       ) {
         throw error;
       }
-      // Jeśli code === 410, to kontynuujemy – event już nie istnieje
     }
 
     const start = new Date(`${date}T${time}:00`);
