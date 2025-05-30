@@ -56,7 +56,7 @@ export default function BookingPage() {
         });
 
         setBusyTimes(times);
-      } catch (err) {
+      } catch {
         toast.error("Unable to load availability.");
       }
     };
@@ -99,7 +99,7 @@ export default function BookingPage() {
         const data = await res.json();
         toast.error(data.error || "Failed to book/reschedule lesson.");
       }
-    } catch (err) {
+    } catch {
       toast.error("Something went wrong.");
     } finally {
       setIsBooking(false);
@@ -182,7 +182,6 @@ export default function BookingPage() {
                             ? "Confirm Reschedule"
                             : "Confirm Booking"}
                         </span>
-                        {/* Glow effect */}
                         <span className="absolute inset-0 rounded-xl bg-emerald-400 opacity-10 blur-2xl animate-pulse z-0"></span>
                       </Button>
                     </div>
