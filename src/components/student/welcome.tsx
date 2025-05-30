@@ -75,15 +75,15 @@ export function Welcome() {
   if (!isLoaded) return null;
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-background py-8">
-      <BackgroundGradient className="max-w-2xl w-full mx-auto">
-        <Card className="shadow-xl rounded-2xl bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md border-none w-full px-2 sm:px-6">
+    <div className="flex min-h-screen flex-col items-center justify-center bg-background py-8 w-full overflow-x-hidden">
+      <BackgroundGradient className="w-full max-w-md sm:max-w-2xl mx-auto">
+        <Card className="shadow-xl rounded-2xl bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md border-none w-full">
           <CardHeader>
             <CardTitle className="text-2xl font-bold mb-1 tracking-tight">
               Welcome back{name ? `, ${name}` : "!"}
             </CardTitle>
           </CardHeader>
-          <CardContent className="space-y-2 text-base text-muted-foreground">
+          <CardContent className="space-y-2 text-base text-muted-foreground px-2 sm:px-6">
             <p>
               You are logged in as <span className="font-mono">{email}</span>
             </p>
@@ -101,7 +101,7 @@ export function Welcome() {
                   <Skeleton className="h-10 w-full" />
                 </div>
               ) : events.length > 0 ? (
-                <ScrollArea className="w-full h-80 max-h-96">
+                <ScrollArea className="w-full h-80 max-h-96 overflow-x-hidden">
                   <ul className="space-y-4">
                     {events.map((event) => {
                       const startDate =
