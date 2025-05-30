@@ -2,7 +2,7 @@
 
 import { ClerkProvider } from "@clerk/nextjs";
 import { usePathname } from "next/navigation";
-import { Toaster } from "sonner";
+import { Toaster } from "@/components/ui/sonner";
 import { BackgroundBeams } from "@/components/ui/background-beams";
 import "./globals.css";
 
