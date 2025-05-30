@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { motion } from "framer-motion";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { BackgroundGradient } from "@/components/ui/gradient-bg";
 import { TypewriterEffectLoop } from "@/components/ui/typewriter-effect";
 
@@ -86,10 +86,11 @@ export default function AboutPage() {
                       detailed feedback is also shared with parents.
                     </>,
                     <>
-                      Lessons are crafted to support every student's social,
-                      emotional, cognitive, and physical growth. We're skilled
-                      in tailoring instruction to each learner's needs, helping
-                      them reach their full potential.
+                      Lessons are crafted to support every student&apos;s
+                      social, emotional, cognitive, and physical growth.
+                      We&apos;re skilled in tailoring instruction to each
+                      learner&apos;s needs, helping them reach their full
+                      potential.
                     </>,
                   ].map((el, i) => (
                     <motion.p
