@@ -9,6 +9,7 @@ import { BackgroundGradient } from "@/components/ui/gradient-bg";
 import { toast } from "sonner";
 
 const lessonHours = [
+  "08:00",
   "09:00",
   "10:00",
   "11:00",
@@ -115,83 +116,89 @@ export default function BookingPage() {
               {rescheduleEventId ? "Reschedule Lesson" : "Book a Lesson"}
             </CardTitle>
           </CardHeader>
-          <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div>
-              <h2 className="text-lg font-semibold mb-2">Pick a day</h2>
-              <Calendar
-                mode="single"
-                selected={selectedDate}
-                onSelect={setSelectedDate}
-                fromDate={new Date()}
-              />
-            </div>
-            <div>
-              <h2 className="text-lg font-semibold mb-2">Available hours</h2>
-              {selectedDate ? (
-                <>
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                    {lessonHours.map((hour) => {
-                      const isBusy = busyTimes.includes(hour);
-                      const isSelected = selectedHour === hour;
+          <CardContent>
+            <div className="flex flex-col md:grid md:grid-cols-2 gap-8">
+              <div>
+                <h2 className="text-lg font-semibold mb-2">Pick a day</h2>
+                <div className="w-full max-w-xs sm:max-w-md mx-auto">
+                  <Calendar
+                    mode="single"
+                    selected={selectedDate}
+                    onSelect={setSelectedDate}
+                    fromDate={new Date()}
+                  />
+                </div>
+              </div>
+              <div>
+                <h2 className="text-lg font-semibold mb-2">Available hours</h2>
+                {selectedDate ? (
+                  <>
+                    <div className="grid grid-cols-3 sm:grid-cols-3 gap-3">
+                      {lessonHours.map((hour) => {
+                        const isBusy = busyTimes.includes(hour);
+                        const isSelected = selectedHour === hour;
 
-                      return (
-                        <Button
-                          key={hour}
-                          variant={
-                            isSelected
-                              ? "default"
-                              : isBusy
-                              ? "outline"
-                              : "secondary"
-                          }
-                          className={`rounded-xl font-semibold shadow transition w-full py-2 text-base ${
-                            isSelected
-                              ? "bg-emerald-600 text-white hover:bg-emerald-700"
-                              : isBusy
-                              ? "opacity-50 cursor-not-allowed"
-                              : "hover:bg-blue-100 dark:hover:bg-blue-950"
-                          }`}
-                          disabled={isBusy}
-                          onClick={() => setSelectedHour(hour)}
-                        >
-                          {hour}
-                        </Button>
-                      );
-                    })}
-                  </div>
-                  {selectedHour && (
-                    <div className="mt-6 flex flex-col items-center">
-                      <Button
-                        className="w-full sm:w-auto rounded-xl font-semibold px-8 py-3 text-base
-                                  bg-gradient-to-r from-emerald-500 via-emerald-600 to-emerald-700
-                                  text-white shadow-emerald-500/30 shadow-lg
-                                  hover:shadow-emerald-400/60
-                                  focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2
-                                  relative overflow-hidden
-                                  active:scale-95 transition duration-150"
-                        style={{
-                          boxShadow: "0 0 24px 2px #34d39980",
-                        }}
-                        onClick={handleBooking}
-                        disabled={isBooking}
-                      >
-                        <span className="relative z-10">
-                          {isBooking
-                            ? "Processing..."
-                            : rescheduleEventId
-                            ? "Confirm Reschedule"
-                            : "Confirm Booking"}
-                        </span>
-                        <span className="absolute inset-0 rounded-xl bg-emerald-400 opacity-10 blur-2xl animate-pulse z-0"></span>
-                      </Button>
+                        return (
+                          <Button
+                            key={hour}
+                            variant={
+                              isSelected
+                                ? "default"
+                                : isBusy
+                                ? "outline"
+                                : "secondary"
+                            }
+                            className={`rounded-xl font-semibold shadow transition w-full py-2 text-base
+                              active:scale-95 duration-150
+                              ${
+                                isSelected
+                                  ? "bg-emerald-600 text-white hover:bg-emerald-700"
+                                  : isBusy
+                                  ? "opacity-50 cursor-not-allowed"
+                                  : "hover:bg-blue-100 dark:hover:bg-blue-950"
+                              }`}
+                            disabled={isBusy}
+                            onClick={() => setSelectedHour(hour)}
+                          >
+                            {hour}
+                          </Button>
+                        );
+                      })}
                     </div>
-                  )}
-                </>
-              ) : (
-                <p className="text-muted-foreground">
-                  Please select a day first.
-                </p>
-              )}
+                    {selectedHour && (
+                      <div className="mt-6 flex flex-col items-center">
+                        <Button
+                          className="w-full sm:w-auto rounded-xl font-semibold px-8 py-3 text-base
+                                    bg-gradient-to-r from-emerald-500 via-emerald-600 to-emerald-700
+                                    text-white shadow-emerald-500/30 shadow-lg
+                                    hover:shadow-emerald-400/60
+                                    focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2
+                                    relative overflow-hidden
+                                    active:scale-95 transition duration-150"
+                          style={{
+                            boxShadow: "0 0 24px 2px #34d39980",
+                          }}
+                          onClick={handleBooking}
+                          disabled={isBooking}
+                        >
+                          <span className="relative z-10">
+                            {isBooking
+                              ? "Processing..."
+                              : rescheduleEventId
+                              ? "Confirm Reschedule"
+                              : "Confirm Booking"}
+                          </span>
+                          <span className="absolute inset-0 rounded-xl bg-emerald-400 opacity-10 blur-2xl animate-pulse z-0"></span>
+                        </Button>
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <p className="text-muted-foreground">
+                    Please select a day first.
+                  </p>
+                )}
+              </div>
             </div>
           </CardContent>
         </Card>
