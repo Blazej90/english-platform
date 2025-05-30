@@ -8,7 +8,7 @@ import { TypewriterEffectLoop } from "@/components/ui/typewriter-effect";
 
 export default function AboutPage() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-background py-8 px-2 sm:px-6">
+    <div className="flex min-h-screen flex-col items-center justify-center  py-8 px-2 sm:px-6">
       <BackgroundGradient className="w-full max-w-4xl mx-auto">
         <Card className="w-full shadow-xl rounded-2xl bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md border-none">
           <CardContent className="p-6 md:p-10 space-y-12">

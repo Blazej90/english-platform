@@ -75,7 +75,7 @@ export function Welcome() {
   if (!isLoaded) return null;
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-background py-8 w-full overflow-x-hidden">
+    <div className="flex min-h-screen flex-col items-center justify-center  py-8 w-full overflow-x-hidden">
       <BackgroundGradient className="w-full max-w-md sm:max-w-2xl mx-auto">
         <Card className="shadow-xl rounded-2xl bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md border-none w-full">
           <CardHeader>
