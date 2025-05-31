@@ -1,4 +1,4 @@
-import { Navbar } from "@/components/navbar";
+import { StudentNavbar } from "@/components/student/student-navbar";
 
 export default function ContactLayout({
   children,
@@ -7,7 +7,7 @@ export default function ContactLayout({
 }) {
   return (
     <>
-      <Navbar />
+      <StudentNavbar />
       <main className="max-w-2xl mx-auto mt-10 p-4">{children}</main>
     </>
   );

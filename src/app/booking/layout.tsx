@@ -1,4 +1,4 @@
-import { Navbar } from "@/components/navbar";
+import { StudentNavbar } from "@/components/student/student-navbar";
 
 export default function BookingLayout({
   children,
@@ -7,7 +7,7 @@ export default function BookingLayout({
 }) {
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
+      <StudentNavbar />
       <main className="flex-1 bg-muted/20 p-6">{children}</main>
     </div>
   );

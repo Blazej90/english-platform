@@ -1,4 +1,4 @@
-import { Navbar } from "@/components/navbar";
+import { StudentNavbar } from "@/components/student/student-navbar";
 import { SyncUser } from "@/components/sync-user";
 
 export default function DashboardLayout({
@@ -9,7 +9,7 @@ export default function DashboardLayout({
   return (
     <div className="min-h-screen flex flex-col">
       <SyncUser />
-      <Navbar />
+      <StudentNavbar />
       <main className="flex-1 p-6 bg-muted/20">{children}</main>
     </div>
   );

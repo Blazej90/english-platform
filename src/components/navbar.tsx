@@ -10,7 +10,6 @@ export function Navbar() {
   return (
     <header className="w-full border-b shadow-sm">
       <div className="px-4 md:px-6 py-3">
-        {/* Mobile */}
         <div className="flex items-center justify-between w-full md:hidden">
           <Sheet>
             <SheetTrigger asChild>
@@ -48,7 +47,6 @@ export function Navbar() {
           </div>
         </div>
 
-        {/* Desktop */}
         <div className="hidden md:flex max-w-7xl mx-auto w-full items-center justify-between">
           <Link href="/dashboard" className="text-lg font-bold">
             English Platform

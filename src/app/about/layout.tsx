@@ -1,4 +1,4 @@
-import { Navbar } from "@/components/navbar";
+import { StudentNavbar } from "@/components/student/student-navbar";
 
 export default function AboutLayout({
   children,
@@ -7,7 +7,7 @@ export default function AboutLayout({
 }) {
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
+      <StudentNavbar />
       <main className="flex-1 p-6 bg-muted/20">{children}</main>
     </div>
   );
