@@ -70,8 +70,17 @@ export default function BookingPage() {
   const handleBooking = async () => {
     if (!selectedDate || !selectedHour) return;
     setIsBooking(true);
-    const date = format(selectedDate, "yyyy-MM-dd");
-    const payload = JSON.stringify({ date, time: selectedHour });
+
+    // Wyciągamy godzinę i minutę
+    const [hour, minute] = selectedHour.split(":");
+    // Tworzymy obiekt Date lokalnie (w strefie czasowej użytkownika)
+    const dateTime = new Date(
+      selectedDate.getFullYear(),
+      selectedDate.getMonth(),
+      selectedDate.getDate(),
+      Number(hour),
+      Number(minute)
+    );
 
     try {
       const res = await fetch(
@@ -82,7 +91,7 @@ export default function BookingPage() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            ...JSON.parse(payload),
+            datetime: dateTime.toISOString(),
             eventId: rescheduleEventId,
           }),
         }

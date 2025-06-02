@@ -13,19 +13,17 @@ export async function POST(req: Request) {
 
   try {
     const body = await req.json();
-    const { date, time } = body;
+    const { datetime } = body; // <-- przyjmujemy jedno pole datetime
 
-    if (!date || !time) {
-      return NextResponse.json(
-        { error: "Missing date or time" },
-        { status: 400 }
-      );
+    if (!datetime) {
+      return NextResponse.json({ error: "Missing datetime" }, { status: 400 });
     }
 
     const user = await (await clerkClient()).users.getUser(userId);
     const studentEmail = user.emailAddresses[0]?.emailAddress || "Unknown";
 
-    const start = new Date(`${date}T${time}:00`);
+    // datetime = np. "2024-06-01T15:00:00.000Z"
+    const start = new Date(datetime);
     const end = addHours(start, 1);
 
     const response = await calendar.events.insert({
