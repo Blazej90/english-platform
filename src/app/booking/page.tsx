@@ -36,9 +36,14 @@ export default function BookingPage() {
     null
   );
 
+  // Czyść rescheduleEventId jeśli nie ma go w localStorage (czyli zwykłe rezerwowanie lekcji)
   useEffect(() => {
     const storedId = localStorage.getItem("rescheduleEventId");
-    if (storedId) setRescheduleEventId(storedId);
+    if (storedId) {
+      setRescheduleEventId(storedId);
+    } else {
+      setRescheduleEventId(null);
+    }
   }, []);
 
   useEffect(() => {
@@ -71,29 +76,27 @@ export default function BookingPage() {
     if (!selectedDate || !selectedHour) return;
     setIsBooking(true);
 
-    // Wyciągamy godzinę i minutę
+    // Składamy datetime w ISO
     const [hour, minute] = selectedHour.split(":");
-    // Tworzymy obiekt Date lokalnie (w strefie czasowej użytkownika)
     const dateTime = new Date(
       selectedDate.getFullYear(),
       selectedDate.getMonth(),
       selectedDate.getDate(),
       Number(hour),
       Number(minute)
-    );
+    ).toISOString();
 
     try {
       const res = await fetch(
-        rescheduleEventId
-          ? `/api/lessons/reschedule?eventId=${rescheduleEventId}`
-          : "/api/lessons/book",
+        rescheduleEventId ? `/api/lessons/reschedule` : "/api/lessons/book",
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            datetime: dateTime.toISOString(),
-            eventId: rescheduleEventId,
-          }),
+          body: JSON.stringify(
+            rescheduleEventId
+              ? { datetime: dateTime, eventId: rescheduleEventId }
+              : { datetime: dateTime }
+          ),
         }
       );
 

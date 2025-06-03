@@ -12,11 +12,10 @@ export async function POST(req: Request) {
 
   try {
     const body = await req.json();
-    const { date, time, eventId } = body;
-
-    if (!date || !time || !eventId) {
+    const { datetime, eventId } = body;
+    if (!datetime || !eventId) {
       return NextResponse.json(
-        { error: "Missing date, time or eventId" },
+        { error: "Missing datetime or eventId" },
         { status: 400 }
       );
     }
@@ -41,7 +40,7 @@ export async function POST(req: Request) {
       }
     }
 
-    const start = new Date(`${date}T${time}:00`);
+    const start = new Date(datetime);
     const end = addHours(start, 1);
 
     const response = await calendar.events.insert({

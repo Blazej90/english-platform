@@ -13,7 +13,7 @@ export async function POST(req: Request) {
 
   try {
     const body = await req.json();
-    const { datetime } = body; // <-- przyjmujemy jedno pole datetime
+    const { datetime } = body;
 
     if (!datetime) {
       return NextResponse.json({ error: "Missing datetime" }, { status: 400 });
@@ -22,7 +22,6 @@ export async function POST(req: Request) {
     const user = await (await clerkClient()).users.getUser(userId);
     const studentEmail = user.emailAddresses[0]?.emailAddress || "Unknown";
 
-    // datetime = np. "2024-06-01T15:00:00.000Z"
     const start = new Date(datetime);
     const end = addHours(start, 1);
 
