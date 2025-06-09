@@ -36,7 +36,6 @@ export default function BookingPage() {
     null
   );
 
-  // Czyść rescheduleEventId jeśli nie ma go w localStorage (czyli zwykłe rezerwowanie lekcji)
   useEffect(() => {
     const storedId = localStorage.getItem("rescheduleEventId");
     if (storedId) {
@@ -76,7 +75,6 @@ export default function BookingPage() {
     if (!selectedDate || !selectedHour) return;
     setIsBooking(true);
 
-    // Składamy datetime w ISO
     const [hour, minute] = selectedHour.split(":");
     const dateTime = new Date(
       selectedDate.getFullYear(),

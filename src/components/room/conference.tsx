@@ -34,7 +34,6 @@ export default function Conference() {
       <div className="flex-1 flex flex-col gap-4">
         <div className="w-full flex-1 flex justify-center items-center min-h-[260px]">
           <div className="w-full max-w-2xl aspect-video relative rounded-2xl shadow-xl bg-white/90 dark:bg-zinc-950/90 backdrop-blur-md border-none">
-            {/* Peer video or waiting */}
             {mainPeer && <Peer peer={mainPeer} />}
             {remotePeers.length === 0 && (
               <div className="absolute inset-0 flex items-center justify-center bg-black/70 rounded-2xl">
@@ -46,7 +45,6 @@ export default function Conference() {
             )}
           </div>
         </div>
-        {/* Thumbnails */}
         {otherThumbnails.length > 0 && (
           <div className="flex gap-2 justify-center mt-2">
             {otherThumbnails.map(
@@ -62,7 +60,6 @@ export default function Conference() {
             )}
           </div>
         )}
-        {/* Controls */}
         <div className="flex justify-center gap-4 py-4 border-t border-zinc-200 dark:border-zinc-800 bg-white/70 dark:bg-zinc-950/70 backdrop-blur-md rounded-b-2xl">
           <Button
             onClick={() => hmsActions.setLocalAudioEnabled(!isAudioOn)}
