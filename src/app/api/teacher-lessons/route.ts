@@ -32,26 +32,6 @@ export async function GET() {
   }
 }
 
-// export async function DELETE(req: Request) {
-//   try {
-//     const { ids } = await req.json();
-//     if (!Array.isArray(ids) || ids.length === 0) {
-//       return NextResponse.json({ error: "No ids provided" }, { status: 400 });
-//     }
-//     const calendarId = process.env.GOOGLE_CALENDAR_ID!;
-//     for (const id of ids) {
-//       await calendar.events.delete({ calendarId, eventId: id });
-//     }
-//     return NextResponse.json({ success: true });
-//   } catch (error) {
-//     console.error("❌ Failed to delete lessons:", error);
-//     return NextResponse.json(
-//       { error: "Failed to delete lessons" },
-//       { status: 500 }
-//     );
-//   }
-// }
-
 export async function DELETE(req: Request) {
   try {
     const { ids } = await req.json();
@@ -62,20 +42,12 @@ export async function DELETE(req: Request) {
     for (const id of ids) {
       try {
         await calendar.events.delete({ calendarId, eventId: id });
-      } catch (error: any) {
-        // Jeśli event już nie istnieje (410), nie rzucamy błędem
-        if (
-          error?.code === 410 ||
-          error?.response?.status === 410 ||
-          (typeof error === "object" &&
-            error !== null &&
-            "code" in error &&
-            error.code === 410)
-        ) {
-          // Lekcja już była usunięta – pomijamy
+      } catch (error) {
+        // Rzutowanie typu na "unknown", potem "as" na obiekt z code/response
+        const err = error as { code?: number; response?: { status?: number } };
+        if (err?.code === 410 || err?.response?.status === 410) {
           continue;
         }
-        // Jeśli to inny błąd, przerywamy
         throw error;
       }
     }
