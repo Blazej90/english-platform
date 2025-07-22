@@ -12,6 +12,8 @@ export async function GET() {
       orderBy: "startTime",
     });
 
+    console.log("All events from Google Calendar:", events.data.items);
+
     const lessons = (events.data.items || []).map((event) => ({
       id: event.id || "",
       summary: event.summary || "Lesson",
@@ -23,14 +25,32 @@ export async function GET() {
       status: event.status,
     }));
 
-    const filteredLessons = lessons.filter((l) => l.start && l.end);
-
-    return NextResponse.json({ lessons: filteredLessons });
+    return NextResponse.json({ lessons });
   } catch (error) {
     console.error("❌ Failed to fetch lessons:", error);
     return NextResponse.json({ lessons: [] }, { status: 500 });
   }
 }
+
+// export async function DELETE(req: Request) {
+//   try {
+//     const { ids } = await req.json();
+//     if (!Array.isArray(ids) || ids.length === 0) {
+//       return NextResponse.json({ error: "No ids provided" }, { status: 400 });
+//     }
+//     const calendarId = process.env.GOOGLE_CALENDAR_ID!;
+//     for (const id of ids) {
+//       await calendar.events.delete({ calendarId, eventId: id });
+//     }
+//     return NextResponse.json({ success: true });
+//   } catch (error) {
+//     console.error("❌ Failed to delete lessons:", error);
+//     return NextResponse.json(
+//       { error: "Failed to delete lessons" },
+//       { status: 500 }
+//     );
+//   }
+// }
 
 export async function DELETE(req: Request) {
   try {
@@ -40,7 +60,24 @@ export async function DELETE(req: Request) {
     }
     const calendarId = process.env.GOOGLE_CALENDAR_ID!;
     for (const id of ids) {
-      await calendar.events.delete({ calendarId, eventId: id });
+      try {
+        await calendar.events.delete({ calendarId, eventId: id });
+      } catch (error: any) {
+        // Jeśli event już nie istnieje (410), nie rzucamy błędem
+        if (
+          error?.code === 410 ||
+          error?.response?.status === 410 ||
+          (typeof error === "object" &&
+            error !== null &&
+            "code" in error &&
+            error.code === 410)
+        ) {
+          // Lekcja już była usunięta – pomijamy
+          continue;
+        }
+        // Jeśli to inny błąd, przerywamy
+        throw error;
+      }
     }
     return NextResponse.json({ success: true });
   } catch (error) {
