@@ -43,7 +43,6 @@ export async function DELETE(req: Request) {
       try {
         await calendar.events.delete({ calendarId, eventId: id });
       } catch (error) {
-        // Rzutowanie typu na "unknown", potem "as" na obiekt z code/response
         const err = error as { code?: number; response?: { status?: number } };
         if (err?.code === 410 || err?.response?.status === 410) {
           continue;
