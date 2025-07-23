@@ -63,7 +63,7 @@ export function StudentNavbar() {
             href="/dashboard"
             className="ml-3 font-bold text-lg tracking-tight bg-gradient-to-r from-emerald-400 via-blue-500 to-purple-500 bg-clip-text text-transparent drop-shadow-[0_1px_8px_rgba(34,211,238,0.55)]"
           >
-            English Platform
+            English Learn Platform
           </Link>
           <div className="ml-auto">
             <UserButton afterSignOutUrl="/" />
@@ -76,7 +76,7 @@ export function StudentNavbar() {
             href="/dashboard"
             className="font-bold text-lg tracking-tight bg-gradient-to-r from-emerald-400 via-blue-500 to-purple-500 bg-clip-text text-transparent drop-shadow-[0_1px_8px_rgba(34,211,238,0.55)]"
           >
-            English Platform
+            English Learn Platform
           </Link>
           <nav className="flex gap-2 sm:gap-4 text-base font-medium">
             {links.map(({ href, label }) => {

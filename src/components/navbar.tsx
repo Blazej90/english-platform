@@ -49,7 +49,7 @@ export function Navbar() {
 
         <div className="hidden md:flex max-w-7xl mx-auto w-full items-center justify-between">
           <Link href="/dashboard" className="text-lg font-bold">
-            English Platform
+            English Learn Platform
           </Link>
 
           <nav className="flex gap-6 text-sm font-medium justify-center flex-1">
